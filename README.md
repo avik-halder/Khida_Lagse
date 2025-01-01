@@ -47,6 +47,8 @@
 1. Clone the repository:
    ```bash
    git clone https://github.com/avik-halder/Khida_Lagse.git
+   ```
+   ```bash
    cd Khida_Lagse
    ```
 
