@@ -154,7 +154,7 @@ const DeliveryTaskApp = () => {
                 </div>
                 <h3>{task.user_name}</h3>
                 <p className="task-address">{task.address}</p>
-                <div className="task-price">${task.price.toFixed(2)}</div>
+                <div className="task-price">৳{task.price.toFixed(2)}</div>
               </div>
             ))}
           </div>
@@ -190,7 +190,7 @@ const DeliveryTaskApp = () => {
               <section className="order-details">
                 <h3>Order Details</h3>
                 <p><strong>Date:</strong> {new Date(selectedOrderDetails.date).toLocaleString()}</p>
-                <p><strong>Total Price:</strong> ${selectedOrderDetails.price.toFixed(2)}</p>
+                <p><strong>Total Price:</strong> ৳{selectedOrderDetails.price.toFixed(2)}</p>
               </section>
 
               <section className="pin-section">
