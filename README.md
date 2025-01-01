@@ -77,7 +77,7 @@
      ```
 
 4. Access the application:
-   - Frontend: [http://localhost:"port_number"]
+   - Frontend: [http://localhost:"port_number"](http://localhost:"port_number")
    - Backend API: [http://localhost:8000](http://localhost:8000)
 
 ---
