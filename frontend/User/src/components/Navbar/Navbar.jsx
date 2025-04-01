@@ -420,7 +420,7 @@ const BasicExample = ({
               <NavDropdown.Item onClick={handleProfileClick} className="dropdown-item">
                 Profile
               </NavDropdown.Item>
-              <NavDropdown.Item href="#orders" className="dropdown-item">
+              <NavDropdown.Item onClick={handleCartClick} className="dropdown-item">
                 Orders
               </NavDropdown.Item>
               <NavDropdown.Divider />

@@ -111,21 +111,64 @@ def create_user(requested_user: schemas.UserBase, db: Session = Depends(get_db))
 
 
 
+# @app.get("/user_login/{user_name}/{password}", tags=["User Management"])
+# def login(user_name: str, password: str, db: Session = Depends(get_db)):
+#     # Retrieve the user and their role
+#     get_user_name = db.query(models.User).filter(models.User.user_name == user_name).first()
+#     if get_user_name is None:
+#         return {"detail": "Please do the registration first"}
+    
+#     hashed_user_id = bcrypt.hashpw(
+#         get_user_name.user_id.encode(),
+#         get_user_name.salt if isinstance(get_user_name.salt, bytes) else get_user_name.salt.encode()
+#     )
+#     result_set = db.query(models.Login).filter(models.Login.user_id == hashed_user_id).first()
+    
+#     if result_set is None:
+#         return {"detail": "Login record not found"}
+
+#     # Verify user ID matches and user is active
+#     if bcrypt.checkpw(get_user_name.user_id.encode(), result_set.user_id):       
+#         if get_user_name.is_active == "1":  
+#             # Verify password
+#             if bcrypt.checkpw(password.encode(), result_set.password):
+#                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+#                 # Include the role in the token payload
+#                 access_token = create_access_token(
+#                     data={
+#                         "sub": user_name,
+#                         "role": result_set.role,
+#                         "name": get_user_name.name,
+#                         "email": get_user_name.email,
+#                         "mobile": get_user_name.mobile_number
+#                     },
+#                     expires_delta=access_token_expires
+#                 )
+#                 return schemas.Token(access_token=access_token, token_type="bearer")
+#             else:
+#                 return {"detail": "Invalid username or password"}
+#         else:
+#             return {"detail": "Activate your account by using OTP"}
+#     else:
+#         return {"detail": "Invalid username or password"}
+
+from fastapi import HTTPException
+
 @app.get("/user_login/{user_name}/{password}", tags=["User Management"])
 def login(user_name: str, password: str, db: Session = Depends(get_db)):
-    # Retrieve the user and their role
+    # Retrieve the user
     get_user_name = db.query(models.User).filter(models.User.user_name == user_name).first()
     if get_user_name is None:
-        return {"detail": "Please do the registration first"}
-    
+        raise HTTPException(status_code=404, detail="Please do the registration first")
+
     hashed_user_id = bcrypt.hashpw(
         get_user_name.user_id.encode(),
         get_user_name.salt if isinstance(get_user_name.salt, bytes) else get_user_name.salt.encode()
     )
     result_set = db.query(models.Login).filter(models.Login.user_id == hashed_user_id).first()
-    
+
     if result_set is None:
-        return {"detail": "Login record not found"}
+        raise HTTPException(status_code=404, detail="Login record not found")
 
     # Verify user ID matches and user is active
     if bcrypt.checkpw(get_user_name.user_id.encode(), result_set.user_id):       
@@ -133,7 +176,6 @@ def login(user_name: str, password: str, db: Session = Depends(get_db)):
             # Verify password
             if bcrypt.checkpw(password.encode(), result_set.password):
                 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-                # Include the role in the token payload
                 access_token = create_access_token(
                     data={
                         "sub": user_name,
@@ -146,12 +188,11 @@ def login(user_name: str, password: str, db: Session = Depends(get_db)):
                 )
                 return schemas.Token(access_token=access_token, token_type="bearer")
             else:
-                return {"detail": "Invalid username or password"}
+                raise HTTPException(status_code=403, detail="Invalid username or password")
         else:
-            return {"detail": "Activate your account by using OTP"}
+            raise HTTPException(status_code=401, detail="Activate your account by using OTP")
     else:
-        return {"detail": "Invalid username or password"}
-
+        raise HTTPException(status_code=403, detail="Invalid username or password")
 
 
 

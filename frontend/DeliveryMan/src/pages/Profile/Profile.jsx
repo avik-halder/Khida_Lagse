@@ -35,7 +35,7 @@ const AdminProfile = () => {
     name: '',
     email: '',
     phone: '',
-    role: 'Admin',
+    role: '',
     avatar: null
   });
 

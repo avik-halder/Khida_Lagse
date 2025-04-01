@@ -419,7 +419,7 @@ const AdminProfile = () => {
     name: '',
     email: '',
     phone: '',
-    role: 'Admin',
+    role: '',
     avatar: null
   });
 
@@ -458,7 +458,7 @@ const AdminProfile = () => {
           name: decoded.name,
           email: decoded.email,
           phone: decoded.mobile,
-          role: 'Admin',
+          role: decoded.role,
           avatar: null
         });
       } catch (error) {
